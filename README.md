@@ -8,14 +8,14 @@ Springcloud Dalston.SR4学习
 #### Eureka
 Eureka Server提供服务注册和发现，实现服务治理   
 
-模块 | 端口 | 说明
---- | ---- | ---- 
-eureka-server | 8761 | 注册中心
-eureka-provider | 8762 | 服务提供
-eureka-provider-a | 8763 | 服务提供a
-eureka-provider-b | 8764 | 服务提供b
-eureka-provider-c | 8765 | 服务提供c
-ribbon-consumer | 8766 | ribbon
+模块 | 端口 | 说明 | 启动顺序
+--- | ---- | ---- | ---- 
+eureka-server | 8761 | 注册中心 | 1
+eureka-provider | 8762 | 服务提供 | 2
+eureka-provider-a | 8763 | 服务提供a | 2
+eureka-provider-b | 8764 | 服务提供b | 2
+eureka-provider-c | 8765 | 服务提供c | 2
+ribbon-consumer | 8766 | ribbon负载均衡 | 3
 
 #### CAP原则又称CAP定理
 指的是在一个分布式系统中， Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），三者不可得兼。  
@@ -41,5 +41,22 @@ CAP原则是NOSQL数据库的基石。
   - Random 随机负载均衡：随机选择状态为UP的Server
   - WeightedResponseTime 加权响应时间负载均衡：根据相应时间分配一个weight，相应时间越长，weight越小，被选中的可能性越低
   - ZoneAvoidanceRule 区域感知轮询负载均衡：复合判断server所在区域的性能和server的可用性选择server
++ 开启ribbon负载均衡
+  - @EnableDiscoveryClient表明向服务注册中心注册，并向ioc注入一个bean（restTemplate）
+  - @LoadBalanced注解表明这个restRemplate开启负载均衡
+  - 消费端调用http://provider-server/hello，provider-server为服务提供者在yml配置的应用名，hello为调用方法名
+```$xslt
+    @Bean
+    @LoadBalanced
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+    
+    public String hello() {
+        return restTemplate.getForObject("http://provider-server/hello", String.class);
+    }
+```
 
-
+#### feign
+Feign是一个声明式的伪Http客户端，用注解  
+Feign默认集成了Ribbon和Hystrix，并和Eureka结合，默认实现了负载均衡的效果

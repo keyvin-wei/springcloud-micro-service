@@ -18,6 +18,7 @@
         <module>provider-server-b</module>
         <module>provider-server-c</module>
         <module>ribbon-consumer</module>
+        <module>feign-consumer</module>
     </modules>
 
     <properties>
