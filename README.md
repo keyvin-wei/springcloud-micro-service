@@ -19,6 +19,7 @@ ribbon-consumer | 8766 | ribbon负载均衡 | 3
 feign-consumer | 8767 | feign可插拔调用服务 | 3
 hystrix-ribbon | 8768 | hystrix+ribbon实现断路器 | 3
 hystrix-feign | 8769 | hystrix+feign实现断路器 | 3
+hystrix-ribbon-dashboard | 8770 | hystrix+feign+dashboard查看负载均衡状态 | 3
 
 ### CAP原则又称CAP定理
 指的是在一个分布式系统中， Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），三者不可得兼。  
@@ -114,7 +115,7 @@ Feign默认集成了Ribbon和Hystrix，并和Eureka结合，默认实现了负�
   - commandProperties 普通配置属性，可配置HystrixCommand对应属性，如采用线程池还是信号量隔离、熔断器熔断规则等
   - ignoreExceptions 忽略的异常，默认HystrixBadRequestException不计入失败
   - groupKey() 组名称，默认使用类名称
-  - commandKey 命令名称，默认使用方法名  
+  - commandKey 命令名称，默认使用方法名
 本项目中hystrix启动顺序：eureka-server，provider-server-a、b、c，hystrix-ribbon  
 启动后访问：[http://127.0.0.1:8768/hello](http://127.0.0.1:8768/hello)  
 刷新正常，关掉A服务，刷新，断路器生效，提示“hystrix ribbon:服务提供者挂了”  
