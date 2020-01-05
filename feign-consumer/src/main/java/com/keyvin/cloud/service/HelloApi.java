@@ -1,4 +1,4 @@
-package com.keyvin.cloud.api;
+package com.keyvin.cloud.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
